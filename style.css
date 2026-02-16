@@ -1,0 +1,110 @@
+/* --- FONDO ANIMADO --- */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: white;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- ANIMACIONES DE ENTRADA --- */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- EFECTO CRISTAL (Glassmorphism) --- */
+.login-box, .upload-box, .downloads-section, .soon-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    transition: transform 0.3s ease;
+}
+
+.login-box:hover, .upload-box:hover {
+    transform: scale(1.02);
+}
+
+/* --- NAVEGACIÓN --- */
+nav {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    background: #6a11cb;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+}
+
+button:hover:not(.btn-disabled) {
+    background: #2575fc;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 117, 252, 0.6);
+}
+
+/* --- BOTONES DESHABILITADOS --- */
+.btn-disabled {
+    background: #444 !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none !important;
+}
+
+/* --- LISTA DE ARCHIVOS ANIMADA --- */
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 12px;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- INPUTS --- */
+input[type="text"], input[type="password"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: #2575fc;
+}

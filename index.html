@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modpack Manager Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="spinner"></div>
+        <p>Cargando archivos...</p>
+    </div>
+
+    <div id="login-screen" class="overlay" style="display:none;">
+        <div class="login-box">
+            <h2>Panel de Control</h2>
+            <input type="text" id="user" placeholder="Usuario">
+            <input type="password" id="pass" placeholder="Contraseña">
+            <button onclick="login()">Entrar</button>
+            <p id="login-error"></p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display:none;">
+        <nav>
+            <button onclick="showPage('fabric')">Fabric</button>
+            <button onclick="showPage('forge')" class="btn-disabled">Forge (Próximamente)</button>
+            <button onclick="showPage('neoforge')" class="btn-disabled">NeoForge (Próximamente)</button>
+            <button onclick="logout()" style="background:#ff4d4d; margin-left: 20px;">Salir</button>
+        </nav>
+
+        <main>
+            <h2 id="page-title">Subir Modpack para Fabric</h2>
+            
+            <div id="content-wrapper">
+                <div class="upload-box">
+                    <input type="file" id="modFile" accept=".zip">
+                    <p>Solo archivos .zip</p>
+                    <button class="upload-btn" onclick="handleUpload()">Subir y Guardar</button>
+                </div>
+
+                <div id="status"></div>
+
+                <div class="downloads-section">
+                    <h3>Archivos en <span id="current-category">FABRIC</span></h3>
+                    <ul id="file-list"></ul>
+                </div>
+            </div>
+
+            <div id="coming-soon" style="display:none;">
+                <div class="soon-card">
+                    <h1>🚧 Próximamente 🚧</h1>
+                    <p>Estamos trabajando para dar soporte a este cargador de mods.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="login-box fade-in">
+    </div>
+
+<div id="main-content" style="display:none;" class="fade-in">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
