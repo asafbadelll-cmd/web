@@ -2,65 +2,103 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Modpack Manager Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modpack Cloud Pro | Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <div id="toast-container"></div>
+
     <div id="preloader">
         <div class="spinner"></div>
-        <p>Cargando archivos...</p>
+        <p class="animate__animated animate__pulse animate__infinite">Sincronizando sistemas...</p>
     </div>
 
-    <div id="login-screen" class="overlay" style="display:none;">
-        <div class="login-box">
-            <h2>Panel de Control</h2>
-            <input type="text" id="user" placeholder="Usuario">
-            <input type="password" id="pass" placeholder="Contraseña">
-            <button onclick="login()">Entrar</button>
-            <p id="login-error"></p>
+    <div id="auth-screen" class="overlay">
+        <div class="glass-card animate__animated animate__zoomIn">
+            <div class="auth-header">
+                <i class="fas fa-shield-halved fa-3x" style="color: var(--primary);"></i>
+                <h2 id="auth-title">Identificación</h2>
+            </div>
+            
+            <div class="auth-inputs">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="user" placeholder="Usuario">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="pass" placeholder="Contraseña">
+                </div>
+                
+                <div class="captcha-container">
+                    <p>Resolver: <span id="captcha-question">...</span></p>
+                    <input type="number" id="captcha-input" placeholder="?">
+                    <button type="button" onclick="generateCaptcha()" class="btn-refresh">
+                        <i class="fas fa-rotate"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="handleAuth()" id="btn-primary" class="btn-glow">
+                <span id="btn-text">Verificar y Entrar</span> <i class="fas fa-chevron-right"></i>
+            </button>
+            <p id="auth-toggle" onclick="toggleAuthMode()">¿No tienes cuenta? Regístrate aquí</p>
         </div>
     </div>
 
     <div id="main-content" style="display:none;">
-        <nav>
-            <button onclick="showPage('fabric')">Fabric</button>
-            <button onclick="showPage('forge')" class="btn-disabled">Forge (Próximamente)</button>
-            <button onclick="showPage('neoforge')" class="btn-disabled">NeoForge (Próximamente)</button>
-            <button onclick="logout()" style="background:#ff4d4d; margin-left: 20px;">Salir</button>
+        <nav class="animate__animated animate__fadeInDown">
+            <div class="nav-brand">
+                <i class="fas fa-box-open"></i> <span>MODPACK CLOUD</span>
+            </div>
+            <div class="nav-links">
+                <button onclick="showPage('fabric')" id="nav-fabric"><i class="fas fa-feather"></i> Fabric</button>
+                <button onclick="showPage('forge')" class="btn-disabled"><i class="fas fa-hammer"></i> Forge</button>
+                <button onclick="showPage('neoforge')" class="btn-disabled"><i class="fas fa-bolt"></i> NeoForge</button>
+            </div>
+            <div class="user-panel">
+                <span id="user-display">Usuario</span>
+                <button onclick="logout()" class="btn-exit"><i class="fas fa-power-off"></i></button>
+            </div>
         </nav>
 
-        <main>
-            <h2 id="page-title">Subir Modpack para Fabric</h2>
-            
-            <div id="content-wrapper">
-                <div class="upload-box">
-                    <input type="file" id="modFile" accept=".zip">
-                    <p>Solo archivos .zip</p>
-                    <button class="upload-btn" onclick="handleUpload()">Subir y Guardar</button>
+        <div class="main-wrapper">
+            <div class="glass-card main-card animate__animated animate__fadeInUp">
+                <h1 id="page-title"><i class="fas fa-folder-tree"></i> Gestor Fabric</h1>
+                
+                <div id="content-wrapper">
+                    <div class="upload-area" id="drop-zone">
+                        <i class="fas fa-cloud-arrow-up fa-3x animate__animated animate__bounce animate__slow animate__infinite"></i>
+                        <input type="file" id="modFile" accept=".zip" onchange="updateFileLabel()">
+                        <p id="file-label">Arrastra tu archivo <b>.zip</b> aquí o haz clic</p>
+                        <button class="btn-upload" onclick="handleUpload()">Subir al Servidor</button>
+                    </div>
+
+                    <div class="downloads-section">
+                        <h3><i class="fas fa-server"></i> Almacenamiento Local</h3>
+                        <div id="file-list" class="file-grid">
+                            </div>
+                    </div>
                 </div>
 
-                <div id="status"></div>
-
-                <div class="downloads-section">
-                    <h3>Archivos en <span id="current-category">FABRIC</span></h3>
-                    <ul id="file-list"></ul>
+                <div id="coming-soon" style="display:none;">
+                    <div class="soon-content animate__animated animate__pulse animate__infinite">
+                        <i class="fas fa-lock fa-4x"></i>
+                        <h2>Acceso Restringido</h2>
+                        <p>Soporte para este cargador de mods en la próxima versión.</p>
+                        <button onclick="showPage('fabric')" style="margin-top:20px; background: var(--primary);">Volver a Fabric</button>
+                    </div>
                 </div>
             </div>
-
-            <div id="coming-soon" style="display:none;">
-                <div class="soon-card">
-                    <h1>🚧 Próximamente 🚧</h1>
-                    <p>Estamos trabajando para dar soporte a este cargador de mods.</p>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div class="login-box fade-in">
-    </div>
-
-<div id="main-content" style="display:none;" class="fade-in">
+        </div>
     </div>
 
     <script src="script.js"></script>
