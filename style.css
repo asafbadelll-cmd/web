@@ -1,13 +1,28 @@
-/* --- FONDO ANIMADO --- */
-body {
+/* --- VARIABLES Y CONFIGURACIÓN --- */
+:root {
+    --primary: #00d2ff;
+    --secondary: #3a7bd5;
+    --accent: #6a11cb;
+    --danger: #ff4757;
+    --success: #2ed573;
+    --glass: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000000);
+    color: white;
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #000);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
-    color: white;
-    overflow-x: hidden;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden; /* Evita scrolls raros */
 }
 
 @keyframes gradientBG {
@@ -16,95 +31,220 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* --- ANIMACIONES DE ENTRADA --- */
-.fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+/* --- PRELOADER --- */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: #0f0c29;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255,255,255,0.1);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
 }
 
-/* --- EFECTO CRISTAL (Glassmorphism) --- */
-.login-box, .upload-box, .downloads-section, .soon-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-    transition: transform 0.3s ease;
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* --- NOTIFICACIONES TOAST --- */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
 }
 
-.login-box:hover, .upload-box:hover {
-    transform: scale(1.02);
+.toast {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+}
+
+/* --- OVERLAY Y CRISTAL --- */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* --- INPUTS Y CAPTCHA --- */
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+    background: rgba(255,255,255,0.1);
+}
+
+.captcha-container {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.captcha-container input {
+    width: 80px;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: bold;
 }
 
 /* --- NAVEGACIÓN --- */
 nav {
-    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+.nav-links button {
+    background: none;
+    border: 1px solid transparent;
+    padding: 10px 15px;
+    margin: 0 5px;
+}
+
+.nav-links button:hover:not(.btn-disabled) {
+    background: var(--glass);
+    border-color: var(--primary);
+}
+
+.btn-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* --- ÁREA DE TRABAJO --- */
+.main-wrapper {
+    height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
-    gap: 15px;
-    background: rgba(0, 0, 0, 0.4);
-    margin-bottom: 30px;
+    align-items: center;
+    padding: 20px;
 }
 
-button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 50px;
-    background: #6a11cb;
-    color: white;
-    font-weight: bold;
+.main-card {
+    max-width: 800px;
+    width: 100%;
+}
+
+.upload-area {
+    border: 2px dashed var(--glass-border);
+    padding: 40px;
+    border-radius: 20px;
+    margin: 20px 0;
+    position: relative;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+    transition: 0.3s;
 }
 
-button:hover:not(.btn-disabled) {
-    background: #2575fc;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(37, 117, 252, 0.6);
+.upload-area:hover {
+    border-color: var(--primary);
+    background: rgba(0, 210, 255, 0.05);
 }
 
-/* --- BOTONES DESHABILITADOS --- */
-.btn-disabled {
-    background: #444 !important;
-    opacity: 0.6;
-    cursor: not-allowed;
-    box-shadow: none !important;
+.upload-area input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
 }
 
-/* --- LISTA DE ARCHIVOS ANIMADA --- */
+/* --- BOTONES --- */
+button {
+    cursor: pointer;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: 0.3s;
+    border: none;
+    color: white;
+}
+
+#btn-primary, .btn-upload {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    padding: 15px;
+    width: 100%;
+    font-size: 1rem;
+    box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+}
+
+#btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 210, 255, 0.4); }
+
+/* --- LISTA DE ARCHIVOS --- */
 .file-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.08);
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 12px;
-    animation: slideIn 0.5s ease-out forwards;
+    background: rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 16px;
+    margin-top: 10px;
+    border: 1px solid var(--glass-border);
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-50px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-/* --- INPUTS --- */
-input[type="text"], input[type="password"] {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 12px;
-    color: white;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    outline: none;
-}
-
-input[type="text"]:focus {
-    border-color: #2575fc;
-}
+.btn-exit { background: var(--danger); padding: 8px 12px; }
